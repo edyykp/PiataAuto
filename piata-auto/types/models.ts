@@ -37,16 +37,28 @@ export type Favorite = {
   listingId: string;
 };
 
+export type BodyType =
+  | "Sedan"
+  | "SUV"
+  | "Hatchback"
+  | "Coupe"
+  | "Cabriolet"
+  | "Break"
+  | "Minibus"
+  | "Pickup";
+
 export type ListingFilters = {
   query?: string;
   minPrice?: number;
   maxPrice?: number;
   brand?: string;
   model?: string;
+  generation?: string;
   minYear?: number;
   maxYear?: number;
   minMileage?: number;
   maxMileage?: number;
+  bodyType?: BodyType;
   fuelType?: FuelType;
   transmission?: Transmission;
   location?: string;
