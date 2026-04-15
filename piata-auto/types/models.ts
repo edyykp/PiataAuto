@@ -58,9 +58,18 @@ export type ListingFilters = {
   maxYear?: number;
   minMileage?: number;
   maxMileage?: number;
+  minPower?: number;
+  maxPower?: number;
+  minDisplacement?: number;
+  maxDisplacement?: number;
   bodyType?: BodyType;
   fuelType?: FuelType;
   transmission?: Transmission;
+  traction?: "Fata" | "Spate" | "Integrală";
+  color?: string;
+  originCountry?: string;
+  firstRegistration?: string;
+  options?: string[];
   location?: string;
   sortBy?: SortBy;
 };

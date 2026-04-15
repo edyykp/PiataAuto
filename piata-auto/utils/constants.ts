@@ -61,3 +61,38 @@ export const CAR_GENERATIONS: Record<string, string[]> = {
   "Mercedes C-Class": ["W206 (2021+)", "W205 (2014-2021)", "W204 (2007-2014)"],
   "Mercedes E-Class": ["W214 (2023+)", "W213 (2016-2023)", "W212 (2009-2016)"],
 };
+
+export const TRACTIONS = ["Fata", "Spate", "Integrală"] as const;
+export const COLORS = [
+  "Alb",
+  "Negru",
+  "Gri",
+  "Albastru",
+  "Roșu",
+  "Argintiu",
+  "Verde",
+  "Bej",
+];
+export const ORIGIN_COUNTRIES = [
+  "România",
+  "Germania",
+  "Italia",
+  "Franța",
+  "Spania",
+  "Belgia",
+  "Olanda",
+];
+export const FIRST_REGISTRATION_OPTIONS = [
+  "Recentă",
+  "1-3 ani",
+  "3-5 ani",
+  "Peste 5 ani",
+];
+export const FEATURE_OPTIONS = [
+  "AC",
+  "Navigație",
+  "Piele",
+  "Bluetooth",
+  "Pilot automat",
+  "Parking asist",
+];

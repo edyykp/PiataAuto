@@ -80,7 +80,10 @@ export default function HomeScreen() {
               <HomeSearchFilters
                 filters={filters}
                 onFiltersChange={setFilters}
-                onSearch={handleSearch}
+                onAdvancedPress={() => {
+                  setPendingFilters(filters);
+                  setFilterOpen(true);
+                }}
                 onReset={handleReset}
               />
             </View>
