@@ -42,7 +42,6 @@ export default function ProfileScreen() {
 
   return (
     <View className="flex-1 bg-slateBg">
-      <AppTopBar title="Profil" subtitle="Setări și informații cont" />
       <View className="px-4 pt-6">
         <View className="rounded-[32px] bg-white px-6 pb-8 pt-8 shadow-xl">
           <View className="items-center">

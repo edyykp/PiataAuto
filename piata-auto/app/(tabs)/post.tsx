@@ -1,4 +1,4 @@
-import { AppButton, AppInput, AppTopBar } from "@/components/ui";
+import { AppButton, AppInput } from "@/components/ui";
 import { useCreateListing } from "@/hooks/useListings";
 import { storageService } from "@/services/storageService";
 import { useAuthStore } from "@/store/authStore";
@@ -68,7 +68,6 @@ export default function PostScreen() {
 
   return (
     <View className="flex-1 bg-slateBg">
-      <AppTopBar title="Publică" subtitle="Adaugă un anunț nou" />
       <ScrollView className="px-4 pt-4">
         <View className="mb-5 rounded-[32px] bg-white px-6 py-6 shadow-xl">
           <Text className="text-2xl font-bold text-slate-900">

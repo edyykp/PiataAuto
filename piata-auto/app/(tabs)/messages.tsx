@@ -13,20 +13,12 @@ export default function MessagesScreen() {
   if (!data.length)
     return (
       <View className="flex-1 bg-slateBg">
-        <AppTopBar
-          title="Mesaje"
-          subtitle="Gestionare conversații cu vânzătorii"
-        />
         <EmptyState title="Nu ai conversații încă. Contactează un vânzător pentru a începe o discuție." />
       </View>
     );
 
   return (
     <View className="flex-1 bg-slateBg">
-      <AppTopBar
-        title="Mesaje"
-        subtitle="Gestionare conversații cu vânzătorii"
-      />
       <FlatList
         className="flex-1 px-4 pt-4"
         data={data}

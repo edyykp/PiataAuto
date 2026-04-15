@@ -14,7 +14,6 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
         tabBarActiveTintColor: "#2563eb",
         tabBarLabelStyle: { fontSize: 12 },
       }}
@@ -22,6 +21,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          headerShown: false,
           title: "Acasă",
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name="house" size={18} color={color} />
