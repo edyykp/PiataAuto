@@ -1,4 +1,5 @@
 import { CenterLoader } from "@/components/ui";
+import "@/global.css";
 import { storage } from "@/services/storage";
 import { useAuthStore } from "@/store/authStore";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
@@ -8,7 +9,6 @@ import { Redirect, Stack } from "expo-router";
 import { useEffect, useMemo } from "react";
 import "react-native-reanimated";
 import Toast from "react-native-toast-message";
-import "@/global.css";
 
 function AppGate() {
   const { user, isBootstrapping } = useAuthStore();
@@ -56,19 +56,19 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen
           name="listings/[id]"
-          options={{ headerShown: true, title: "Car details" }}
+          options={{ headerShown: true, title: "Detalii mașină" }}
         />
         <Stack.Screen
           name="listings/edit/[id]"
-          options={{ headerShown: true, title: "Edit listing" }}
+          options={{ headerShown: true, title: "Editează anunț" }}
         />
         <Stack.Screen
           name="messages/[id]"
-          options={{ headerShown: true, title: "Conversation" }}
+          options={{ headerShown: true, title: "Conversație" }}
         />
         <Stack.Screen
           name="my-listings"
-          options={{ headerShown: true, title: "My listings" }}
+          options={{ headerShown: true, title: "Anunțurile mele" }}
         />
       </Stack>
       <Toast />

@@ -1,6 +1,3 @@
-import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
-import { FlatList, Text, View } from "react-native";
 import { AppButton, AppInput } from "@/components/ui";
 import {
   useMarkNotificationDelivered,
@@ -12,6 +9,9 @@ import {
 } from "@/hooks/useMessages";
 import { useAuthStore } from "@/store/authStore";
 import { formatDateTime } from "@/utils/format";
+import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { FlatList, Text, View } from "react-native";
 
 export default function ConversationScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -40,12 +40,18 @@ export default function ConversationScreen() {
 
   const onSend = async () => {
     if (!text.trim() || !user) return;
-    await send.mutateAsync({ threadId: id, senderId: user.id, text: text.trim() });
+    await send.mutateAsync({
+      threadId: id,
+      senderId: user.id,
+      text: text.trim(),
+    });
     typingState.mutate({ threadId: id, typing: false });
     setText("");
   };
 
-  const otherParticipants = (thread?.participantIds ?? []).filter((participantId) => participantId !== user?.id);
+  const otherParticipants = (thread?.participantIds ?? []).filter(
+    (participantId) => participantId !== user?.id,
+  );
   const isOtherTyping = otherParticipants.some((participantId) => {
     const timestamp = thread?.typingBy?.[participantId];
     if (!timestamp) return false;
@@ -60,28 +66,56 @@ export default function ConversationScreen() {
         keyExtractor={(item) => item.id}
         onViewableItemsChanged={({ viewableItems }) => {
           viewableItems.forEach(({ item }) => {
-            if (!user?.id || item.senderId === user.id || item.notificationMeta?.delivered) return;
+            if (
+              !user?.id ||
+              item.senderId === user.id ||
+              item.notificationMeta?.delivered
+            )
+              return;
             markDelivered.mutate({ threadId: id, messageId: item.id });
           });
         }}
         renderItem={({ item }) => (
-          <View className={`mb-2 max-w-[80%] rounded-2xl px-3 py-2 ${item.senderId === user?.id ? "self-end bg-primary" : "self-start bg-white"}`}>
-            <Text className={item.senderId === user?.id ? "text-white" : "text-slate-900"}>{item.text}</Text>
-            <Text className={`mt-1 text-[10px] ${item.senderId === user?.id ? "text-blue-100" : "text-slate-400"}`}>
+          <View
+            className={`mb-2 max-w-[80%] rounded-2xl px-3 py-2 ${item.senderId === user?.id ? "self-end bg-primary" : "self-start bg-white"}`}
+          >
+            <Text
+              className={
+                item.senderId === user?.id ? "text-white" : "text-slate-900"
+              }
+            >
+              {item.text}
+            </Text>
+            <Text
+              className={`mt-1 text-[10px] ${item.senderId === user?.id ? "text-blue-100" : "text-slate-400"}`}
+            >
               {formatDateTime(item.createdAt)}
             </Text>
             {item.senderId === user?.id && (
               <Text className="mt-1 text-[10px] text-blue-100">
-                {otherParticipants.some((participantId) => Boolean(item.readBy?.[participantId])) ? "Seen" : "Sent"}
+                {otherParticipants.some((participantId) =>
+                  Boolean(item.readBy?.[participantId]),
+                )
+                  ? "Citit"
+                  : "Trimis"}
               </Text>
             )}
           </View>
         )}
       />
       <View className="border-t border-slate-200 bg-white px-3 py-3">
-        <AppInput label="Message" value={text} onChangeText={setText} placeholder="Type a message..." />
-        {isOtherTyping && <Text className="mb-2 text-xs text-slate-500">The other user is typing...</Text>}
-        <AppButton title="Send" onPress={onSend} />
+        <AppInput
+          label="Mesaj"
+          value={text}
+          onChangeText={setText}
+          placeholder="Scrie un mesaj..."
+        />
+        {isOtherTyping && (
+          <Text className="mb-2 text-xs text-slate-500">
+            Celălalt utilizator scrie...
+          </Text>
+        )}
+        <AppButton title="Trimite" onPress={onSend} />
       </View>
     </View>
   );

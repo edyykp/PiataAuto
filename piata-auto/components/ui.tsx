@@ -1,14 +1,20 @@
-import { ActivityIndicator, Pressable, Text, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 export const AppInput = ({
   label,
   ...props
 }: { label: string } & React.ComponentProps<typeof TextInput>) => (
-  <View className="mb-3">
-    <Text className="mb-1 text-xs font-semibold text-slate-700">{label}</Text>
+  <View className="mb-4">
+    <Text className="mb-2 text-sm font-semibold text-slate-700">{label}</Text>
     <TextInput
-      className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-slate-900"
-      placeholderTextColor="#94a3b8"
+      className="rounded-3xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm"
+      placeholderTextColor="#64748b"
       {...props}
     />
   </View>
@@ -25,22 +31,47 @@ export const AppButton = ({
 }) => (
   <Pressable
     onPress={onPress}
-    className={`rounded-xl px-4 py-3 ${
-      variant === "primary" ? "bg-primary" : variant === "danger" ? "bg-red-500" : "bg-slate-200"
-    }`}
+    className={`rounded-3xl px-5 py-3 shadow-lg ${
+      variant === "primary"
+        ? "bg-primary"
+        : variant === "danger"
+          ? "bg-red-500"
+          : "bg-slate-100"
+    } active:scale-95`}
   >
-    <Text className={`text-center font-semibold ${variant === "ghost" ? "text-slate-800" : "text-white"}`}>{title}</Text>
+    <Text
+      className={`text-center text-base font-semibold ${variant === "ghost" ? "text-slate-900" : "text-white"}`}
+    >
+      {title}
+    </Text>
   </Pressable>
 );
 
+export const AppTopBar = ({
+  title,
+  subtitle,
+}: {
+  title: string;
+  subtitle?: string;
+}) => (
+  <View className="bg-white px-4 py-4 border-b border-slate-200 shadow-sm">
+    <Text className="text-lg font-semibold text-slate-900">{title}</Text>
+    {subtitle ? (
+      <Text className="mt-1 text-sm text-slate-500">{subtitle}</Text>
+    ) : null}
+  </View>
+);
+
 export const CenterLoader = () => (
-  <View className="flex-1 items-center justify-center">
-    <ActivityIndicator />
+  <View className="flex-1 items-center justify-center bg-slateBg">
+    <ActivityIndicator size="large" color="#2563eb" />
   </View>
 );
 
 export const EmptyState = ({ title }: { title: string }) => (
-  <View className="mt-16 items-center px-8">
-    <Text className="text-center text-base text-slate-500">{title}</Text>
+  <View className="mt-20 items-center rounded-3xl bg-white px-8 py-8 shadow-sm">
+    <Text className="text-center text-base font-semibold text-slate-700">
+      {title}
+    </Text>
   </View>
 );
