@@ -70,6 +70,14 @@ export default function RootLayout() {
           name="my-listings"
           options={{ headerShown: true, title: "Anunțurile mele" }}
         />
+        <Stack.Screen
+          name="legal/terms"
+          options={{ headerShown: true, title: "Termeni și condiții" }}
+        />
+        <Stack.Screen
+          name="legal/privacy"
+          options={{ headerShown: true, title: "Politica de confidențialitate" }}
+        />
       </Stack>
       <Toast />
     </PersistQueryClientProvider>

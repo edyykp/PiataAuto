@@ -29,15 +29,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="search"
-        options={{
-          title: "Căutare",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome6 name="magnifying-glass" size={18} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="post"
         options={{
           title: "Publică",

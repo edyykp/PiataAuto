@@ -72,10 +72,28 @@ export default function ProfileScreen() {
       </View>
       <View className="px-4 mt-6 space-y-3">
         <AppButton title="Salvează profilul" onPress={save} />
-        <Link href="/my-listings" asChild>
+        <Link href={"/my-listings" as never} asChild>
           <View>
             <AppButton
               title="Anunțurile mele"
+              onPress={() => {}}
+              variant="ghost"
+            />
+          </View>
+        </Link>
+        <Link href={"/legal/terms" as never} asChild>
+          <View>
+            <AppButton
+              title="Termeni și condiții"
+              onPress={() => {}}
+              variant="ghost"
+            />
+          </View>
+        </Link>
+        <Link href={"/legal/privacy" as never} asChild>
+          <View>
+            <AppButton
+              title="Politica de confidențialitate"
               onPress={() => {}}
               variant="ghost"
             />

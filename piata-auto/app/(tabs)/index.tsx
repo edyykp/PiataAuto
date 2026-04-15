@@ -1,6 +1,9 @@
-import { ListingCard } from "@/components/ListingCard";
+import { FiltersSheet } from "@/components/home/FiltersSheet";
+import { HomeHeader } from "@/components/home/HomeHeader";
+import { HomeListingCard } from "@/components/home/HomeListingCard";
 import { SkeletonCard } from "@/components/SkeletonCard";
-import { AppTopBar, EmptyState } from "@/components/ui";
+import { EmptyState } from "@/components/ui";
+import { useDebounce } from "@/hooks/useDebounce";
 import { useFavorites, useToggleFavorite } from "@/hooks/useFavorites";
 import { useInfiniteListings } from "@/hooks/useListings";
 import {
@@ -9,14 +12,26 @@ import {
 } from "@/hooks/useRealtime";
 import { db } from "@/services/firebase";
 import { useAuthStore } from "@/store/authStore";
-import { useMemo } from "react";
-import { FlatList, Text, View } from "react-native";
+import { ListingFilters } from "@/types/models";
+import { BRANDS } from "@/utils/constants";
+import { useMemo, useState } from "react";
+import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
+
+const brandCategories = BRANDS.slice(0, 6);
 
 export default function HomeScreen() {
   const user = useAuthStore((s) => s.user);
+  const [search, setSearch] = useState("");
+  const [isFilterOpen, setFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<ListingFilters>({ sortBy: "newest" });
+  const [pendingFilters, setPendingFilters] = useState<ListingFilters>({
+    sortBy: "newest",
+  });
+  const debouncedSearch = useDebounce(search, 400);
+
   const favorites = useFavorites(user?.id);
   const toggle = useToggleFavorite(user?.id);
-  const query = useInfiniteListings({ sortBy: "newest" });
+  const query = useInfiniteListings({ ...filters, query: debouncedSearch });
   const realtime = useRealtimeListings();
   const realtimeFavoriteIds = useRealtimeFavoriteIds(user?.id);
   const items = useMemo(
@@ -25,6 +40,18 @@ export default function HomeScreen() {
     [query.data, realtime.items],
   );
   const favoriteIds = db ? realtimeFavoriteIds : (favorites.data ?? []);
+  const featured = items.slice(0, 8);
+  const activeFilterCount = Math.max(
+    0,
+    Object.entries(filters).filter(
+      ([key, value]) => key !== "sortBy" && value !== undefined && value !== "",
+    ).length,
+  );
+
+  const openFilter = () => {
+    setPendingFilters(filters);
+    setFilterOpen(true);
+  };
 
   if (query.isLoading || realtime.loading) {
     return (
@@ -38,61 +65,112 @@ export default function HomeScreen() {
 
   return (
     <View className="flex-1 bg-slateBg">
-      <AppTopBar
-        title="Acasă"
-        subtitle="Anunțuri recente și recomandate pentru tine"
-      />
-      <View className="rounded-b-[32px] bg-gradient-to-r from-primaryDark via-primary to-cyan-500 px-6 pb-6 pt-10 shadow-xl">
-        <Text className="text-3xl font-extrabold text-white">
-          Descoperă următorul tău automobil
-        </Text>
-        <Text className="mt-3 max-w-[260px] text-base text-white/90">
-          Răsfoiește mașini premium de la vânzători de încredere și găsește
-          potrivirea perfectă în câteva secunde.
-        </Text>
-        <View className="mt-5 flex-row items-center justify-between rounded-3xl bg-slate-900/15 border border-white/20 px-4 py-4 shadow-sm">
-          <View>
-            <Text className="text-sm uppercase tracking-[0.3em] text-white/80">
-              Listings
-            </Text>
-            <Text className="text-2xl font-bold text-white">
-              {items.length}
-            </Text>
-          </View>
-          <View>
-            <Text className="text-sm uppercase tracking-[0.3em] text-white/80">
-              Favorites
-            </Text>
-            <Text className="text-2xl font-bold text-white">
-              {favoriteIds.length}
-            </Text>
-          </View>
-        </View>
-      </View>
       <FlatList
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingTop: 24,
-          paddingBottom: 24,
-        }}
         data={items}
         keyExtractor={(item) => item.id}
+        contentContainerStyle={{ paddingBottom: 36 }}
         onEndReached={() => query.hasNextPage && query.fetchNextPage()}
-        renderItem={({ item }) => (
-          <ListingCard
-            item={item}
-            rightAction={
-              <Text
-                onPress={() => toggle.mutate(item.id)}
-                className="font-semibold text-primary"
-              >
-                {favoriteIds.includes(item.id)
-                  ? "Șterge din preferate"
-                  : "Adaugă la preferate"}
+        ListHeaderComponent={
+          <View className="mb-4">
+            <HomeHeader
+              search={search}
+              onChangeSearch={setSearch}
+              onPressFilters={openFilter}
+              activeFilterCount={activeFilterCount}
+            />
+
+            <View className="mt-5">
+              <Text className="px-4 text-lg font-semibold text-slate-900">
+                Popular brands
               </Text>
-            }
-          />
+              <ScrollView
+                horizontal
+                className="mt-3 px-4"
+                showsHorizontalScrollIndicator={false}
+              >
+                {brandCategories.map((brand) => {
+                  const active = filters.brand === brand;
+                  return (
+                    <Pressable
+                      key={brand}
+                      onPress={() =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          brand: prev.brand === brand ? undefined : brand,
+                        }))
+                      }
+                      className={`mr-2 rounded-full px-4 py-2 ${active ? "bg-slate-900" : "bg-white"}`}
+                    >
+                      <Text
+                        className={`text-sm font-medium ${active ? "text-white" : "text-slate-700"}`}
+                      >
+                        {brand}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </ScrollView>
+            </View>
+
+            <View className="mt-6">
+              <View className="mb-3 flex-row items-center justify-between px-4">
+                <Text className="text-lg font-semibold text-slate-900">
+                  Featured for you
+                </Text>
+                <Text className="text-sm font-medium text-primary">
+                  {featured.length} cars
+                </Text>
+              </View>
+              <ScrollView
+                horizontal
+                contentContainerStyle={{ paddingHorizontal: 16 }}
+                showsHorizontalScrollIndicator={false}
+              >
+                {featured.map((item) => (
+                  <View key={`featured-${item.id}`} className="mr-3 w-[300px]">
+                    <HomeListingCard
+                      item={item}
+                      favorite={favoriteIds.includes(item.id)}
+                      onFavorite={() => toggle.mutate(item.id)}
+                    />
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
+
+            <View className="mb-2 mt-6 flex-row items-center justify-between px-4">
+              <Text className="text-lg font-semibold text-slate-900">
+                Latest listings
+              </Text>
+              <Text className="text-sm text-slate-500">{items.length} rezultate</Text>
+            </View>
+          </View>
+        }
+        renderItem={({ item }) => (
+          <View className="px-4">
+            <HomeListingCard
+              item={item}
+              favorite={favoriteIds.includes(item.id)}
+              onFavorite={() => toggle.mutate(item.id)}
+            />
+          </View>
         )}
+      />
+
+      <FiltersSheet
+        visible={isFilterOpen}
+        value={pendingFilters}
+        onChange={setPendingFilters}
+        onClose={() => setFilterOpen(false)}
+        onReset={() => {
+          setPendingFilters({ sortBy: "newest" });
+          setFilters({ sortBy: "newest" });
+          setFilterOpen(false);
+        }}
+        onApply={() => {
+          setFilters(pendingFilters);
+          setFilterOpen(false);
+        }}
       />
     </View>
   );
