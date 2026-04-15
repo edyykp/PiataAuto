@@ -9,8 +9,8 @@ import { RangeInput } from "./RangeInput";
 type HomeSearchFiltersProps = {
   filters: ListingFilters;
   onFiltersChange: (filters: ListingFilters) => void;
+  onSearch: () => void;
   onAdvancedPress: () => void;
-  onReset: () => void;
 };
 
 type DropdownOption = {
@@ -105,8 +105,8 @@ const DropdownSelect = ({
 export const HomeSearchFilters = ({
   filters,
   onFiltersChange,
+  onSearch,
   onAdvancedPress,
-  onReset,
 }: HomeSearchFiltersProps) => {
   const availableModels = useMemo(
     () =>
@@ -201,10 +201,15 @@ export const HomeSearchFilters = ({
 
       <View className="mb-4 flex-row gap-3">
         <View className="flex-1">
-          <AppButton title="Resetează" variant="ghost" onPress={onReset} />
+          <AppButton title="Caută" onPress={onSearch} />
         </View>
         <View className="flex-1">
-          <AppButton title="Filtre avansate" onPress={onAdvancedPress} />
+          <AppButton
+            title="Filtre avansate"
+            variant="ghost"
+            onPress={onAdvancedPress}
+            icon={<FontAwesome6 name="sliders" size={14} color="#6b7280" />}
+          />
         </View>
       </View>
     </View>

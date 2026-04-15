@@ -54,7 +54,6 @@ type Props = {
   value: ListingFilters;
   onChange: (value: ListingFilters) => void;
   onClose: () => void;
-  onReset: () => void;
   onApply: () => void;
 };
 
@@ -292,7 +291,6 @@ export const FiltersSheet = ({
   value,
   onChange,
   onClose,
-  onReset,
   onApply,
 }: Props) => {
   const toggleFeature = (feature: string) => {
@@ -519,18 +517,7 @@ export const FiltersSheet = ({
 
           {/* Sticky footer */}
           <View className="border-t border-slate-100 bg-slate-50 px-5 pb-8 pt-3">
-            <View className="flex-row gap-3">
-              <View className="flex-1">
-                <AppButton
-                  title="Resetează"
-                  variant="ghost"
-                  onPress={onReset}
-                />
-              </View>
-              <View className="flex-2">
-                <AppButton title="Aplică filtrele" onPress={onApply} />
-              </View>
-            </View>
+            <AppButton title="Aplică filtrele" onPress={onApply} />
           </View>
         </View>
       </View>

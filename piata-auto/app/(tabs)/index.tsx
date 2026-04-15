@@ -14,6 +14,7 @@ import { db } from "@/services/firebase";
 import { useAuthStore } from "@/store/authStore";
 import { ListingFilters } from "@/types/models";
 import { BRANDS } from "@/utils/constants";
+import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -42,11 +43,10 @@ export default function HomeScreen() {
   const featured = items.slice(0, 8);
 
   const handleSearch = () => {
-    setFilters(filters);
-  };
-
-  const handleReset = () => {
-    setFilters({ sortBy: "newest" });
+    router.push({
+      pathname: "/search",
+      params: { filters: JSON.stringify(filters) },
+    });
   };
 
   if (query.isLoading || realtime.loading) {
@@ -72,7 +72,6 @@ export default function HomeScreen() {
               filters={filters}
               onFiltersChange={setFilters}
               onSearch={handleSearch}
-              onReset={handleReset}
             />
 
             {/* Structured Filters UI */}
@@ -80,11 +79,11 @@ export default function HomeScreen() {
               <HomeSearchFilters
                 filters={filters}
                 onFiltersChange={setFilters}
+                onSearch={handleSearch}
                 onAdvancedPress={() => {
                   setPendingFilters(filters);
                   setFilterOpen(true);
                 }}
-                onReset={handleReset}
               />
             </View>
 
@@ -183,14 +182,12 @@ export default function HomeScreen() {
         value={pendingFilters}
         onChange={setPendingFilters}
         onClose={() => setFilterOpen(false)}
-        onReset={() => {
-          setPendingFilters({ sortBy: "newest" });
-          setFilters({ sortBy: "newest" });
-          setFilterOpen(false);
-        }}
         onApply={() => {
-          setFilters(pendingFilters);
           setFilterOpen(false);
+          router.push({
+            pathname: "/search",
+            params: { filters: JSON.stringify(pendingFilters) },
+          });
         }}
       />
     </SafeAreaView>

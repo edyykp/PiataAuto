@@ -23,6 +23,8 @@ export type CarListing = {
   fuelType: FuelType;
   transmission: Transmission;
   engine: string;
+  power: string;
+  sellerName: string;
   description: string;
   images: string[];
   location: string;

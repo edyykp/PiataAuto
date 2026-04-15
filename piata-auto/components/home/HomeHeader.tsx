@@ -7,15 +7,9 @@ type Props = {
   filters: ListingFilters;
   onFiltersChange: (filters: ListingFilters) => void;
   onSearch: () => void;
-  onReset: () => void;
 };
 
-export const HomeHeader = ({
-  filters,
-  onFiltersChange,
-  onSearch,
-  onReset,
-}: Props) => {
+export const HomeHeader = ({ filters, onFiltersChange, onSearch }: Props) => {
   const activeFilterCount = Object.entries(filters).filter(
     ([key, value]) => key !== "sortBy" && value !== undefined && value !== "",
   ).length;

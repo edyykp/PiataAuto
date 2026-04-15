@@ -1,3 +1,4 @@
+import React from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -24,10 +25,12 @@ export const AppButton = ({
   title,
   onPress,
   variant = "primary",
+  icon,
 }: {
   title: string;
   onPress: () => void;
   variant?: "primary" | "ghost" | "danger";
+  icon?: React.ReactNode;
 }) => (
   <Pressable
     onPress={onPress}
@@ -39,11 +42,14 @@ export const AppButton = ({
           : "bg-slate-100"
     } active:scale-95`}
   >
-    <Text
-      className={`text-center text-base font-semibold ${variant === "ghost" ? "text-slate-900" : "text-white"}`}
-    >
-      {title}
-    </Text>
+    <View className="flex-row items-center justify-center gap-2">
+      {icon}
+      <Text
+        className={`text-center text-base font-semibold ${variant === "ghost" ? "text-slate-900" : "text-white"}`}
+      >
+        {title}
+      </Text>
+    </View>
   </Pressable>
 );
 
