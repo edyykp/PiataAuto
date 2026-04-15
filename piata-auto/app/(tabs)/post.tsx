@@ -60,6 +60,7 @@ export default function PostScreen() {
       price: Number(values.price),
       images: uploadedImages,
       userId: user.id,
+      sellerName: user.name || "",
     });
     Toast.show({ type: "success", text1: "Anunț publicat" });
     setStep(1);

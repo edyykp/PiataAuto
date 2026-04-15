@@ -9,25 +9,49 @@ export const MOCK_USER: UserProfile = {
   createdAt: new Date().toISOString(),
 };
 
-export const MOCK_LISTINGS: CarListing[] = Array.from({ length: 40 }).map((_, i) => ({
-  id: `listing-${i + 1}`,
-  userId: i % 2 === 0 ? "u1" : "u2",
-  title: `${["BMW", "Audi", "Toyota", "Mercedes"][i % 4]} ${["320d", "A4", "Corolla", "C220"][i % 4]} ${2015 + (i % 9)}`,
-  price: 5500 + i * 650,
-  brand: ["BMW", "Audi", "Toyota", "Mercedes"][i % 4],
-  model: ["320d", "A4", "Corolla", "C220"][i % 4],
-  year: 2015 + (i % 9),
-  mileage: 65000 + i * 4200,
-  fuelType: ["Diesel", "Petrol", "Hybrid", "Diesel"][i % 4] as CarListing["fuelType"],
-  transmission: i % 3 === 0 ? "Automatic" : "Manual",
-  engine: `${1.6 + (i % 4) * 0.2}L`,
-  description: "Well-maintained vehicle, full service history, no major accidents.",
-  images: [
-    `https://picsum.photos/seed/car-${i + 1}/900/600`,
-    `https://picsum.photos/seed/car-${i + 100}/900/600`,
-  ],
-  location: ["Bucharest", "Cluj", "Iasi", "Timisoara"][i % 4],
-  createdAt: new Date(Date.now() - i * 1000 * 60 * 60 * 8).toISOString(),
-  viewsCount: 100 + i * 9,
-  favoritesCount: 6 + (i % 15),
-}));
+export const MOCK_LISTINGS: CarListing[] = Array.from({ length: 40 }).map(
+  (_, i) => ({
+    id: `listing-${i + 1}`,
+    userId: i % 2 === 0 ? "u1" : "u2",
+    title: `${["BMW", "Audi", "Toyota", "Mercedes"][i % 4]} ${["320d", "A4", "Corolla", "C220"][i % 4]} ${2015 + (i % 9)}`,
+    price: 5500 + i * 650,
+    brand: ["BMW", "Audi", "Toyota", "Mercedes"][i % 4],
+    model: ["320d", "A4", "Corolla", "C220"][i % 4],
+    generation: ["F30", "B8", "E160", "W205"][i % 4],
+    bodyType: ["Sedan", "SUV", "Hatchback", "Coupe"][
+      i % 4
+    ] as CarListing["bodyType"],
+    year: 2015 + (i % 9),
+    mileage: 65000 + i * 4200,
+    fuelType: ["Diesel", "Petrol", "Hybrid", "Diesel"][
+      i % 4
+    ] as CarListing["fuelType"],
+    transmission: i % 3 === 0 ? "Automatic" : "Manual",
+    engine: `${1.6 + (i % 4) * 0.2}L`,
+    power: `${110 + (i % 4) * 40} hp`,
+    displacement: 1600 + (i % 4) * 200,
+    traction: ["FWD", "RWD", "AWD", "4WD"][i % 4],
+    color: ["Black", "Silver", "White", "Red"][i % 4],
+    originCountry: ["Germany", "Austria", "Japan", "Germany"][i % 4],
+    firstRegistration: `${2014 + (i % 10)}-01-15`,
+    options: [
+      ["Leather seats", "Panoramic roof", "Heated seats"],
+      ["Air conditioning", "Cruise control"],
+      ["Park assist", "Bluetooth", "USB"],
+      ["Navigation", "Sunroof"],
+    ][i % 4],
+    sellerName: ["Diesel Import", "Euro Cars", "Auto Hub", "Premium Motors"][
+      i % 4
+    ],
+    description:
+      "Well-maintained vehicle, full service history, no major accidents.",
+    images: [
+      `https://picsum.photos/seed/car-${i + 1}/900/600`,
+      `https://picsum.photos/seed/car-${i + 100}/900/600`,
+    ],
+    location: ["Bucharest", "Cluj", "Iasi", "Timisoara"][i % 4],
+    createdAt: new Date(Date.now() - i * 1000 * 60 * 60 * 8).toISOString(),
+    viewsCount: 100 + i * 9,
+    favoritesCount: 6 + (i % 15),
+  }),
+);
