@@ -2,28 +2,28 @@ import { AppButton, AppInput, AppSelect } from "@/components/ui";
 import { useCreateListing } from "@/hooks/useListings";
 import { storageService } from "@/services/storageService";
 import { useAuthStore } from "@/store/authStore";
-import { compressImage } from "@/utils/image";
+import { CarListing } from "@/types/models";
 import {
-  BRANDS,
   BODY_TYPES,
+  BRANDS,
   CAR_GENERATIONS,
   CAR_MODELS,
   COLORS,
   FIRST_REGISTRATION_OPTIONS,
   FUELS,
   ORIGIN_COUNTRIES,
-  TRANSMISSIONS,
   TRACTIONS,
+  TRANSMISSIONS,
 } from "@/utils/constants";
+import { compressImage } from "@/utils/image";
+import { FontAwesome6 } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
-import { ScrollView, Text, View, Pressable, Image } from "react-native";
+import { useForm, useWatch } from "react-hook-form";
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import Toast from "react-native-toast-message";
 import { z } from "zod";
-import { CarListing } from "@/types/models";
-import { FontAwesome6 } from "@expo/vector-icons";
 
 // ─────────────────────────────────────────────
 // FULL MARKETPLACE SCHEMA
@@ -119,12 +119,15 @@ export default function PostScreen() {
   const currencyValue = useWatch({ control, name: "currency" });
   const colorValue = useWatch({ control, name: "color" });
   const originCountryValue = useWatch({ control, name: "originCountry" });
-  const firstRegistrationValue = useWatch({ control, name: "firstRegistration" });
+  const firstRegistrationValue = useWatch({
+    control,
+    name: "firstRegistration",
+  });
 
-  const modelOptions = brandValue ? CAR_MODELS[brandValue] ?? [] : [];
+  const modelOptions = brandValue ? (CAR_MODELS[brandValue] ?? []) : [];
   const generationOptions =
     brandValue && modelValue
-      ? CAR_GENERATIONS[`${brandValue} ${modelValue}`] ?? []
+      ? (CAR_GENERATIONS[`${brandValue} ${modelValue}`] ?? [])
       : [];
 
   const pickImage = async () => {
@@ -156,7 +159,9 @@ export default function PostScreen() {
       year: Number(values.year),
       mileage: Number(values.mileage),
       price: Number(values.price),
-      displacement: values.displacement ? Number(values.displacement) : undefined,
+      displacement: values.displacement
+        ? Number(values.displacement)
+        : undefined,
       bodyType: values.bodyType as CarListing["bodyType"],
       images: uploadedImages,
       userId: user.id,
@@ -258,7 +263,9 @@ export default function PostScreen() {
                 setValue("generation", "");
               }}
               disabled={!brandValue}
-              placeholder={brandValue ? "Selectează modelul" : "Alege marca mai întâi"}
+              placeholder={
+                brandValue ? "Selectează modelul" : "Alege marca mai întâi"
+              }
             />
 
             {generationOptions.length > 0 ? (
@@ -277,14 +284,24 @@ export default function PostScreen() {
               label="Tip caroserie"
               value={bodyTypeValue}
               options={BODY_TYPES}
-              onValueChange={(value) => setValue("bodyType", value as z.infer<typeof schema>["bodyType"]) }
+              onValueChange={(value) =>
+                setValue(
+                  "bodyType",
+                  value as z.infer<typeof schema>["bodyType"],
+                )
+              }
             />
 
             <AppSelect
               label="Stare"
               value={conditionValue}
               options={CONDITION_OPTIONS as readonly string[]}
-              onValueChange={(value) => setValue("condition", value as z.infer<typeof schema>["condition"]) }
+              onValueChange={(value) =>
+                setValue(
+                  "condition",
+                  value as z.infer<typeof schema>["condition"],
+                )
+              }
               placeholder="Selectează starea"
             />
           </View>
@@ -312,13 +329,23 @@ export default function PostScreen() {
               label="Combustibil"
               value={fuelTypeValue}
               options={FUELS}
-              onValueChange={(value) => setValue("fuelType", value as z.infer<typeof schema>["fuelType"]) }
+              onValueChange={(value) =>
+                setValue(
+                  "fuelType",
+                  value as z.infer<typeof schema>["fuelType"],
+                )
+              }
             />
             <AppSelect
               label="Transmisie"
               value={transmissionValue}
               options={TRANSMISSIONS}
-              onValueChange={(value) => setValue("transmission", value as z.infer<typeof schema>["transmission"]) }
+              onValueChange={(value) =>
+                setValue(
+                  "transmission",
+                  value as z.infer<typeof schema>["transmission"],
+                )
+              }
             />
             <AppInput label="Motor" {...control.register("engine")} />
 
@@ -337,7 +364,12 @@ export default function PostScreen() {
               label="Tracțiune"
               value={tractionValue}
               options={TRACTIONS}
-              onValueChange={(value) => setValue("traction", value as z.infer<typeof schema>["traction"]) }
+              onValueChange={(value) =>
+                setValue(
+                  "traction",
+                  value as z.infer<typeof schema>["traction"],
+                )
+              }
               placeholder="Selectează tracțiunea"
             />
           </View>
@@ -359,7 +391,12 @@ export default function PostScreen() {
               label="Monedă"
               value={currencyValue}
               options={CURRENCY_OPTIONS as readonly string[]}
-              onValueChange={(value) => setValue("currency", value as z.infer<typeof schema>["currency"]) }
+              onValueChange={(value) =>
+                setValue(
+                  "currency",
+                  value as z.infer<typeof schema>["currency"],
+                )
+              }
             />
             <AppInput label="Locație" {...control.register("location")} />
 

@@ -1,3 +1,4 @@
+import { FontAwesome6 } from "@expo/vector-icons";
 import React from "react";
 import {
   ActivityIndicator,
@@ -6,7 +7,6 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { FontAwesome6 } from "@expo/vector-icons";
 
 export const AppInput = ({
   label,
