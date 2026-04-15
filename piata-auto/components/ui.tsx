@@ -6,6 +6,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 export const AppInput = ({
   label,
@@ -20,6 +21,62 @@ export const AppInput = ({
     />
   </View>
 );
+
+export const AppSelect = ({
+  label,
+  value,
+  placeholder = "Selectează",
+  options,
+  onValueChange,
+  disabled,
+}: {
+  label: string;
+  value?: string;
+  placeholder?: string;
+  options: readonly string[];
+  onValueChange: (value: string) => void;
+  disabled?: boolean;
+}) => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <View className="mb-4 z-10">
+      <Text className="mb-2 text-sm font-semibold text-slate-700">{label}</Text>
+      <Pressable
+        onPress={() => !disabled && setOpen((current) => !current)}
+        className={`flex-row items-center justify-between rounded-3xl border px-4 py-3 bg-white shadow-sm ${
+          disabled ? "border-slate-200 opacity-60" : "border-slate-200"
+        }`}
+      >
+        <Text className={`${value ? "text-slate-900" : "text-slate-400"}`}>
+          {value || placeholder}
+        </Text>
+        <FontAwesome6 name="chevron-down" size={14} color="#64748b" />
+      </Pressable>
+
+      {open && (
+        <View className="mt-2 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+          {options.map((option) => (
+            <Pressable
+              key={option}
+              onPress={() => {
+                onValueChange(option);
+                setOpen(false);
+              }}
+              className="border-b border-slate-100 px-4 py-3"
+            >
+              <Text
+                className={`text-sm ${option === value ? "font-semibold text-slate-900" : "text-slate-700"}`}
+              >
+                {option}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      )}
+    </View>
+  );
+};
 
 export const AppButton = ({
   title,
